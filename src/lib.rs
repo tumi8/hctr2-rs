@@ -17,7 +17,7 @@
 #![feature(array_chunks)]
 #![feature(let_chains)]
 #![feature(slice_as_chunks)]
-#![feature(split_array)]
+//#![feature(split_array)]
 #![warn(missing_docs, rust_2018_idioms)]
 // Because I want to use "let S = ..." to match the paper.
 #![allow(non_snake_case)]
@@ -149,7 +149,7 @@ where
         assert!(dst.len() == src.len());
 
         // M || N ← P, |M| = n
-        let (M, N) = src.split_array_ref::<BLOCK_SIZE>();
+        let Some((M, N)) = src.split_first_chunk::<BLOCK_SIZE>() else { panic!() };
 
         self.init_tweak(tweak);
 
@@ -177,7 +177,7 @@ where
         // S ← MM ⊕ UU ⊕ L
         let S = xor3(&MM, &UU.into(), &self.L.into());
 
-        let (U, V) = dst.split_array_mut::<BLOCK_SIZE>();
+        let Some((U, V)) = dst.split_first_chunk_mut::<BLOCK_SIZE>() else { panic!() };
 
         // V ← N ⊕ XCTR_k(S)[0;|N|]
         self.xctr(V, N, &S);
@@ -235,7 +235,7 @@ where
         assert!(data.len() >= BLOCK_SIZE);
 
         // M || N ← P, |M| = n
-        let (M, N) = data.split_array_mut::<BLOCK_SIZE>();
+        let Some((M, N)) = data.split_first_chunk_mut::<BLOCK_SIZE>() else { panic!() };
 
         self.init_tweak(tweak);
 
