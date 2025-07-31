@@ -5,7 +5,7 @@ description = """
 An implementation of the length-preserving encryption HCTR2 algorithm.
 """
 authors = ["Eric Lagergren"]
-edition = "2021"
+edition = "2024"
 license = "BSD-3-Clause"
 readme = "README.md"
 documentation = "https://docs.rs/hctr2-rs"
